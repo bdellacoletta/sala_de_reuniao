@@ -16,9 +16,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_06_201912) do
 
   create_table "bookings", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.datetime "booking_date"
-    t.datetime "booking_time"
-    t.integer "status", default: 0, null: false
+    t.datetime "booking_datetime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_bookings_on_user_id"
