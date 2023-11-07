@@ -20,16 +20,20 @@
       <tr>
         <td><%= "#{hour}:00" %></td>
         <% @dates_for_days.each do |date| %>
-          <td>
+          <td data-controller="manage-booking">
             <% event = "#{date} #{hour}" %>
             <% booking = Booking.find_by(booking_datetime: event.to_datetime) %>
             <% if booking %>
               <%= "reservado para #{booking.user.name}" %>
               <% if booking.user == current_user && @current_date >= Date.today %>
-                <button data-controller="manage-booking" data-action="click->manage-booking#deleteBooking" type="button" value="<%= booking.id %>" data-manage-booking-target="bookingId"> <%= "X" %></button></p>
+                <button data-action="click->manage-booking#deleteBooking" type="button" value="<%= booking.id %>" data-manage-booking-target="bookingId"> <%= "X" %></button></p>
               <% end %>
             <% else %>
-              <%= "disponível" %>
+              <% if @current_date >= Date.today || @dates_for_days.include?(Date.today) %>
+                <button data-action="click->manage-booking#newBooking" type="button" data-date= "<%= date.strftime("%d/%m/%Y") %> "data-hour="<%= hour %>"> <%= "Disponível" %></button></p>
+              <% else %>
+                <%= 'disponível' %>
+              <% end %>
             <% end %>
           </td>
         <% end %>

@@ -18,11 +18,37 @@ export default class extends Controller {
     fetch(`/bookings/${id}`, {
       method: 'DELETE',
       headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRF-Token': csrfToken
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-Token': csrfToken
       }
+    })
+    .then(response => response.json())
+  }
+
+  newBooking(event) {
+    const element = event.currentTarget;
+    const date = element.dataset.date;
+    const hour = element.dataset.hour;
+    if (window.confirm(`Tem certeza que deseja fazer a sua reserva para o dia ${date} às ${hour}:00h?`)) {
+      this.#create(date, hour)
+      window.location.reload(true)
+    }
+  }
+
+  #create(date, hour) {
+    const csrfToken = document.head.querySelector("[name='csrf-token']").content;
+
+    fetch('/bookings', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-Token': csrfToken
+      },
+      body: JSON.stringify({ date: date, hour: hour })
     })
     .then(response => response.json())
   }
