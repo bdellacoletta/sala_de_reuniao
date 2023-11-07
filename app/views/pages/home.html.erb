@@ -25,7 +25,7 @@
             <% booking = Booking.find_by(booking_datetime: event.to_datetime) %>
             <% if booking %>
               <%= "reservado para #{booking.user.name}" %>
-              <% if booking.user == current_user %>
+              <% if booking.user == current_user && @current_date >= Date.today %>
                 <button data-controller="manage-booking" data-action="click->manage-booking#deleteBooking" type="button" value="<%= booking.id %>" data-manage-booking-target="bookingId"> <%= "X" %></button></p>
               <% end %>
             <% else %>
