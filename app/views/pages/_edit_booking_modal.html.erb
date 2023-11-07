@@ -1,0 +1,20 @@
+<div class="modal fade" id="<%= modal_id %>" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Editar reserva da Sala de Reunião</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= simple_form_for booking, url: booking_path(booking), method: :patch do |f| %>
+        <div class="modal-body">
+          <%= f.input :booking_datetime, as: :datetime,
+                      label: 'Alterar reserva para' %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-bs-dismiss="modal">Cancelar</button>
+          <%= f.submit 'Salvar' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

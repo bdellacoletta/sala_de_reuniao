@@ -1,4 +1,6 @@
 class BookingsController < ApplicationController
+  before_action :set_booking, only: %i[edit update destroy]
+
   def new
     booking = Booking.new
     authorize booking
@@ -15,11 +17,31 @@ class BookingsController < ApplicationController
     end
   end
 
-  def destroy
-    booking = Booking.find(params[:id])
-    authorize booking
-    booking.destroy
+  def edit; end
 
+  def update
+    if @booking.update(booking_params)
+      redirect_to(request.referrer || root_path)
+      flash[:alert] = 'Reserva alterada.'
+    else
+      render :home
+      flash[:notice] = 'Não foi possível realizar a alteração da reserva.'
+    end
+  end
+
+  def destroy
+    @booking.destroy
     render json: { message: 'Reserva cancelada.' }, status: 200
+  end
+
+  private
+
+  def booking_params
+    params.require(:booking).permit(:booking_datetime)
+  end
+
+  def set_booking
+    @booking = Booking.find(params[:id])
+    authorize @booking
   end
 end

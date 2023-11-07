@@ -24,13 +24,19 @@
             <% event = "#{date} #{hour}" %>
             <% booking = Booking.find_by(booking_datetime: event.to_datetime) %>
             <% if booking %>
-              <button type="button" data-bs-toggle="modal" data-bs-target="#bookingModal<%= booking.id %>">
+              <button type="button" data-bs-toggle="modal" data-bs-target="#showBookingModal<%= booking.id %>">
                 <%= "reservado para #{booking.user.name}" %>
               </button>
-              <%= render "modal_booking", booking: booking, modal_id: "bookingModal#{booking.id}" %>
+              <%= render "show_booking_modal", booking: booking, modal_id: "showBookingModal#{booking.id}" %>
+
               <% if booking.user == current_user && @current_date >= Date.today %>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#editBookingModal<%= booking.id %>">
+                  <%= "editar" %>
+                </button>
+                <%= render "edit_booking_modal", booking: booking, modal_id: "editBookingModal#{booking.id}" %>
                 <button data-action="click->manage-booking#deleteBooking" type="button" value="<%= booking.id %>" data-manage-booking-target="bookingId"> <%= "X" %></button></p>
               <% end %>
+
             <% else %>
               <% if @current_date >= Date.today || @dates_for_days.include?(Date.today) %>
                 <button data-action="click->manage-booking#newBooking" type="button" data-date= "<%= date.strftime("%d/%m/%Y") %> "data-hour="<%= hour %>"> <%= "Disponível" %></button></p>
