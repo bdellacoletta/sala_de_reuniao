@@ -1,0 +1,36 @@
+<h1>Reserva da Sala de Reunião</h1>
+
+<%= link_to "<<", { week: @first_day_of_week - 7 }, class: 'navigation-link' %>
+<%= "Semana de #{@first_day_of_week.strftime("%d/%m/%Y")} a #{@last_day_of_week.strftime("%d/%m/%Y")}" %>
+<%= link_to ">>", { week: @first_day_of_week + 7 }, class: 'navigation-link' %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Horário</th>
+      <th>Segunda-feira</th>
+      <th>Terça-feira</th>
+      <th>Quarta-feira</th>
+      <th>Quinta-feira</th>
+      <th>Sexta-feira</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% (6..18).each do |hour| %>
+      <tr>
+        <td><%= "#{hour}:00" %></td>
+        <% @dates_for_days.each do |date| %>
+          <td>
+            <% event = "#{date} #{hour}" %>
+            <% booking = Booking.find_by(booking_datetime: event.to_datetime) %>
+            <% if booking %>
+              <%= "reservado para #{booking.user.name}" %>
+            <% else %>
+              <%= "disponível" %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
