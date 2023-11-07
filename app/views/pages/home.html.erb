@@ -29,7 +29,7 @@
               </button>
               <%= render "show_booking_modal", booking: booking, modal_id: "showBookingModal#{booking.id}" %>
 
-              <% if booking.user == current_user && @current_date >= Date.today %>
+              <% if booking.user == current_user && date >= Date.today %>
                 <button type="button" data-bs-toggle="modal" data-bs-target="#editBookingModal<%= booking.id %>">
                   <%= "editar" %>
                 </button>
@@ -38,7 +38,7 @@
               <% end %>
 
             <% else %>
-              <% if @current_date >= Date.today || @dates_for_days.include?(Date.today) %>
+              <% if date >= Date.today  %>
                 <button data-action="click->manage-booking#newBooking" type="button" data-date= "<%= date.strftime("%d/%m/%Y") %> "data-hour="<%= hour %>"> <%= "Disponível" %></button></p>
               <% else %>
                 <%= 'disponível' %>
