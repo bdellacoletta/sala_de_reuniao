@@ -1,4 +1,15 @@
-<h1>Reserva da Sala de Reunião</h1>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+      <p class="navbar-brand">Reserva da Sala de Reunião</p>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><p class="nav-link active" aria-current="page"><%= "Olá, #{current_user.name.capitalize}" %></p></li>
+          <li class="nav-item"><p><%= link_to "Sair", destroy_user_session_path, class: "nav-link", data: { turbo_method: :delete } %></p></li>
+        </ul>
+      </div>
+  </div>
+</nav>
 
 <%= link_to "<<", { week: @first_day_of_week - 7 }, class: 'navigation-link' %>
 <%= "Semana de #{@first_day_of_week.strftime("%d/%m/%Y")} a #{@last_day_of_week.strftime("%d/%m/%Y")}" %>
