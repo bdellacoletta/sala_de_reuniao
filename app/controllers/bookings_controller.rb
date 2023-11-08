@@ -21,12 +21,11 @@ class BookingsController < ApplicationController
 
   def update
     if @booking.update(booking_params)
-      redirect_to(request.referrer || root_path)
       flash[:alert] = 'Reserva alterada.'
     else
-      render :home
-      flash[:notice] = 'Não foi possível realizar a alteração da reserva.'
+      flash[:notice] = 'Não foi possível realizar a alteração da reserva, verifique se data e horário não estão no passado.'
     end
+    redirect_to(request.referrer || root_path)
   end
 
   def destroy

@@ -75,5 +75,6 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem 'shoulda-matchers'
+  gem 'database_cleaner-active_record'
+  gem 'shoulda-matchers', '~> 5.0'
 end

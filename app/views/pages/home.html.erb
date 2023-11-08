@@ -38,10 +38,10 @@
               <% end %>
 
             <% else %>
-              <% if date >= Date.today  %>
-                <button data-action="click->manage-booking#newBooking" type="button" data-date= "<%= date.strftime("%d/%m/%Y") %> "data-hour="<%= hour %>"> <%= "Disponível" %></button></p>
-              <% else %>
+              <% if date < Date.today || (date == Date.today && hour <= Time.now.hour) %>
                 <%= 'disponível' %>
+              <% else %>
+                <button data-action="click->manage-booking#newBooking" type="button" data-date= "<%= date.strftime("%d/%m/%Y") %> "data-hour="<%= hour %>"> <%= "Disponível" %></button></p>
               <% end %>
             <% end %>
           </td>

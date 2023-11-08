@@ -97,6 +97,10 @@ GEM
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
+    database_cleaner-active_record (2.1.0)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     date (3.3.3)
     debug (1.8.0)
       irb (>= 1.5.0)
@@ -284,6 +288,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   bootstrap
+  database_cleaner-active_record
   debug
   devise
   error_highlight (>= 0.4.0)
@@ -297,7 +302,7 @@ DEPENDENCIES
   rails (~> 7.1.1)
   rspec-rails
   sass-rails (~> 6.0)
-  shoulda-matchers
+  shoulda-matchers (~> 5.0)
   simple_form!
   sprockets-rails
   stimulus-rails
