@@ -39,6 +39,7 @@ export default class extends Controller {
 
   #create(date, hour) {
     const csrfToken = document.head.querySelector("[name='csrf-token']").content;
+    const bookingDatetime = `${date} ${hour}:00:00`
 
     fetch('/bookings', {
       method: 'POST',
@@ -48,7 +49,7 @@ export default class extends Controller {
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-Token': csrfToken
       },
-      body: JSON.stringify({ date: date, hour: hour })
+      body: JSON.stringify({ booking_datetime: bookingDatetime })
     })
     .then(response => response.json())
   }
