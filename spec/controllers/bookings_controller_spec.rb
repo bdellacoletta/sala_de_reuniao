@@ -6,14 +6,14 @@ RSpec.describe BookingsController, type: :controller do
 
   before { sign_in user }
 
-  describe 'GET #new' do
+  describe '#new booking' do
     it 'returns a success response' do
       get :new
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
     end
   end
 
-  describe 'POST #create' do
+  describe '#create booking' do
     it 'creates a new booking' do
       post :create, params: { booking: { booking_datetime: Time.now } }
       expect(response).to have_http_status(200)
@@ -25,14 +25,14 @@ RSpec.describe BookingsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
+  describe '#edit booking' do
     it 'returns a success response' do
       get :edit, params: { id: booking.id }
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
     end
   end
 
-  describe 'PUT #update' do
+  describe '#update booking' do
     it 'updates a booking' do
       put :update, params: { id: booking.id, booking: { booking_datetime: Time.now } }
       expect(flash[:alert]).to eq('Reserva alterada.')
@@ -46,7 +46,7 @@ RSpec.describe BookingsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
+  describe '#destroy booking' do
     it 'destroys a booking' do
       delete :destroy, params: { id: booking.id }
       expect(response).to have_http_status(200)

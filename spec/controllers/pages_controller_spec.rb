@@ -8,7 +8,7 @@ RSpec.describe PagesController, type: :controller do
   describe 'should get home' do
     it 'returns a success response' do
       get :home
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
     end
   end
 end
