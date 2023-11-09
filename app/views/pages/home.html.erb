@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-      <p class="navbar-brand">Reserva da Sala de Reunião</p>
+      <p class="navbar-brand">Sala de Reunião</p>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -11,53 +11,65 @@
   </div>
 </nav>
 
-<%= link_to "<<", { week: @first_day_of_week - 7 }, class: 'navigation-link' %>
-<%= "Semana de #{@first_day_of_week.strftime("%d/%m/%Y")} a #{@last_day_of_week.strftime("%d/%m/%Y")}" %>
-<%= link_to ">>", { week: @first_day_of_week + 7 }, class: 'navigation-link' %>
+<div class="container">
+    <div class="text-center mt-5">
+        <h1>Reservas</h1>
+        <p class="lead">
+          <%= link_to "<<", { week: @first_day_of_week - 7 }, class: 'link-dark' %>
+          <%= " Semana de #{@first_day_of_week.strftime("%d/%m/%Y")} a #{@last_day_of_week.strftime("%d/%m/%Y")}" %>
+          <%= link_to " >>", { week: @first_day_of_week + 7 }, class: 'link-dark' %>
+        </p>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle table-sm mt-3">
+            <thead>
+              <tr>
+                <th>Horário</th>
+                <th>Segunda-feira</th>
+                <th>Terça-feira</th>
+                <th>Quarta-feira</th>
+                <th>Quinta-feira</th>
+                <th>Sexta-feira</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              <% (6..18).each do |hour| %>
+                <tr>
+                  <td><p><%= "#{hour}:00" %></p></td>
+                  <% @dates_for_days.each do |date| %>
+                    <td data-controller="manage-booking">
+                      <% event = "#{date} #{hour}" %>
+                      <% booking = Booking.find_by(booking_datetime: event.to_datetime) %>
+                      <% if booking %>
+                        <div class="d-inline-flex align-items-center">
+                        <button type="button" class="btn btn-outline link-primary p-0" data-bs-toggle="modal" data-bs-target="#showBookingModal<%= booking.id %>">
+                          <p><%= "reservado para #{booking.user.name}" %></p>
+                        </button>
+                        <%= render "show_booking_modal", booking: booking, modal_id: "showBookingModal#{booking.id}" %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Horário</th>
-      <th>Segunda-feira</th>
-      <th>Terça-feira</th>
-      <th>Quarta-feira</th>
-      <th>Quinta-feira</th>
-      <th>Sexta-feira</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% (6..18).each do |hour| %>
-      <tr>
-        <td><%= "#{hour}:00" %></td>
-        <% @dates_for_days.each do |date| %>
-          <td data-controller="manage-booking">
-            <% event = "#{date} #{hour}" %>
-            <% booking = Booking.find_by(booking_datetime: event.to_datetime) %>
-            <% if booking %>
-              <button type="button" data-bs-toggle="modal" data-bs-target="#showBookingModal<%= booking.id %>">
-                <%= "reservado para #{booking.user.name}" %>
-              </button>
-              <%= render "show_booking_modal", booking: booking, modal_id: "showBookingModal#{booking.id}" %>
+                        <% if booking.user == current_user && date >= Date.today %>
+                          <button type="button" class="btn btn-outline link-primary p-1" data-bs-toggle="modal" data-bs-target="#editBookingModal<%= booking.id %>">
+                            <p><i class="fa-solid fa-arrows-rotate"></i></p>
+                          </button>
+                          <%= render "edit_booking_modal", booking: booking, modal_id: "editBookingModal#{booking.id}" %>
+                          <button data-action="click->manage-booking#deleteBooking" type="button" class="btn btn-outline link-primary p-1" value="<%= booking.id %>" data-manage-booking-target="bookingId">
+                            <p><i class="fa-regular fa-trash-can"></i></p>
+                          </button></p>
+                        <% end %>
+                        </div>
 
-              <% if booking.user == current_user && date >= Date.today %>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#editBookingModal<%= booking.id %>">
-                  <%= "editar" %>
-                </button>
-                <%= render "edit_booking_modal", booking: booking, modal_id: "editBookingModal#{booking.id}" %>
-                <button data-action="click->manage-booking#deleteBooking" type="button" value="<%= booking.id %>" data-manage-booking-target="bookingId"> <%= "X" %></button></p>
+                      <% else %>
+                        <% if date < Date.today || (date == Date.today && hour <= Time.now.hour) %>
+                          <p><%= 'Disponível' %></p>
+                        <% else %>
+                          <button data-action="click->manage-booking#newBooking" type="button" class="btn btn-outline link-success" data-date= "<%= date.strftime("%d/%m/%Y") %> "data-hour="<%= hour %>"> <%= "Disponível" %></button></p>
+                        <% end %>
+                      <% end %>
+                    </td>
+                  <% end %>
+                </tr>
               <% end %>
-
-            <% else %>
-              <% if date < Date.today || (date == Date.today && hour <= Time.now.hour) %>
-                <%= 'disponível' %>
-              <% else %>
-                <button data-action="click->manage-booking#newBooking" type="button" data-date= "<%= date.strftime("%d/%m/%Y") %> "data-hour="<%= hour %>"> <%= "Disponível" %></button></p>
-              <% end %>
-            <% end %>
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+            </tbody>
+          </table>
+        </div>
+    </div>
+</div>

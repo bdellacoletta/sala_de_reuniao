@@ -7,12 +7,14 @@
       </div>
       <%= simple_form_for booking, url: booking_path(booking), method: :patch do |f| %>
         <div class="modal-body">
-          <%= f.input :booking_datetime, as: :datetime,
+          <%= f.input :booking_datetime, as: :string,
+                      input_html: { type: 'datetime-local', class: "m-2",
+                                    value: f.object.booking_datetime.strftime('%Y-%m-%dT%H:%M') },
                       label: 'Alterar reserva para' %>
         </div>
         <div class="modal-footer">
-          <button type="button" data-bs-dismiss="modal">Cancelar</button>
-          <%= f.submit 'Salvar' %>
+          <button type="button" class= "btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+          <%= f.submit 'Salvar', class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>
