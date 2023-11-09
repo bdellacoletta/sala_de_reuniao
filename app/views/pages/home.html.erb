@@ -46,7 +46,7 @@
                         </button>
                         <%= render "show_booking_modal", booking: booking, modal_id: "showBookingModal#{booking.id}" %>
 
-                        <% if booking.user == current_user && date >= Date.today %>
+                        <% unless booking.user != current_user || (booking.user == current_user && (date < Date.today || (date == Date.today && hour <= Time.now.hour))) %>
                           <button type="button" class="btn btn-outline link-primary p-1" data-bs-toggle="modal" data-bs-target="#editBookingModal<%= booking.id %>">
                             <p><i class="fa-solid fa-arrows-rotate"></i></p>
                           </button>
