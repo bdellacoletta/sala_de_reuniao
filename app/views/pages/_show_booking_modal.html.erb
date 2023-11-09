@@ -1,0 +1,16 @@
+<div class="modal fade" id="<%= modal_id %>" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Dados da reserva da Sala de Reunião</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><%= "Responsável: #{booking.user.name.capitalize}"%></p>
+        <p><%= "Data: #{booking.booking_datetime.strftime("%d/%m/%Y")}" %></p>
+        <p><%= "Horário: #{booking.booking_datetime.strftime("%H:%M")}h"%></p>
+        <p><%= "Reserva realizada em #{booking.created_at.strftime("%d/%m/%Y")} às #{booking.created_at.strftime("%H:%M")}h"%></p>
+      </div>
+    </div>
+  </div>
+</div>
