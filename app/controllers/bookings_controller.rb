@@ -7,7 +7,7 @@ class BookingsController < ApplicationController
   end
 
   def create
-    booking = Booking.new(user: current_user, booking_datetime: booking_params[:booking_datetime].to_datetime)
+    booking = Booking.new(user: current_user, booking_datetime: booking_params[:booking_datetime])
     authorize booking
     if booking.save
       render json: { message: 'Reserva realizada.', booking: booking.id }, status: 200

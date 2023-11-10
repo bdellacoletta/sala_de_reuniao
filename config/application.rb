@@ -25,6 +25,5 @@ module SalaDeReuniao
     # config.eager_load_paths << Rails.root.join("extras")
     config.i18n.default_locale = :pt
     config.assets.precompile += %w( *.css *.js )
-    config.time_zone = 'Brasilia'
   end
 end
