@@ -42,5 +42,7 @@ RSpec.configure do |config|
 
     Capybara.current_driver = :selenium_firefox
     Capybara.javascript_driver = :selenium_firefox
+    Capybara.automatic_reload = false
+    Capybara.default_max_wait_time = 10
   end
 end

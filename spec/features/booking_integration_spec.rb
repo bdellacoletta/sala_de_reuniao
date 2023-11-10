@@ -22,9 +22,25 @@ RSpec.feature 'Booking Integration', type: :feature do
   scenario 'User creates a booking', js: true do
     visit root_path
     puts "bookings before: #{user.bookings.count}"
+    expect(user.bookings.count).to eq(0)
     first("button[data-action='click->manage-booking#newBooking']", wait: 10).click
     sleep 2
     page.driver.browser.switch_to.alert.accept
+    booking_datetime = "#{Date.today} #{Time.now.hour + 1}"
+    page.driver.browser.execute_script(
+      "fetch('/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ booking_datetime: '#{booking_datetime}'})
+      })"
+    )
+    wait_for_ajax
+    sleep 2
+    puts "bookings after: #{user.bookings.count}"
+    expect(user.bookings.count).to eq(1)
     expect(page).to have_current_path(root_path, wait: 10)
   end
 
@@ -45,7 +61,6 @@ RSpec.feature 'Booking Integration', type: :feature do
 
   scenario 'Show a booking', js: true do
     booking = Booking.create!(user: user, booking_datetime: "#{Date.today} #{Time.now.hour + 1}:00:00")
-
     visit root_path
     find("button[data-bs-target='#showBookingModal#{booking.id}']").click
     within('.modal') do
@@ -58,10 +73,15 @@ RSpec.feature 'Booking Integration', type: :feature do
     booking = create(:booking, user: user, booking_datetime: "#{Date.today} #{Time.now.hour + 1}:00:00")
 
     visit root_path
+    puts "booking before: #{user.bookings.count}"
+    expect(user.bookings.count).to eq(1)
     find("button[data-manage-booking-target='bookingId'][value='#{booking.id}']").click
     page.driver.browser.switch_to.alert.accept
     page.driver.browser.execute_script("fetch('/bookings/#{booking.id}', { method: 'DELETE' })")
     wait_for_ajax
+    sleep 2
+    puts "booking after: #{user.bookings.count}"
+    expect(user.bookings.count).to eq(0)
     expect(page).to have_current_path(root_path, wait: 10)
   end
 end
