@@ -37,10 +37,7 @@ RSpec.configure do |config|
 
   config.before(:each, type: :feature, js: true) do
     Capybara.register_driver :selenium_firefox do |app|
-      options = Selenium::WebDriver::Firefox::Options.new
-      options.profile = Selenium::WebDriver::Firefox::Profile.new('/home/branca/.mozilla/firefox/h7lspi7h.default')
-
-      Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
+      Capybara::Selenium::Driver.new(app, browser: :firefox)
     end
 
     Capybara.current_driver = :selenium_firefox
