@@ -79,5 +79,7 @@ group :test do
   gem 'database_cleaner-active_record'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 4.0', '>= 4.0.0'
+  gem 'webdrivers', "~> 5.2.0"
+  gem 'rexml'
 end

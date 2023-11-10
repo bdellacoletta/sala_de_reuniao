@@ -3,6 +3,7 @@ require 'factory_bot_rails'
 require 'shoulda/matchers'
 require 'spec_helper'
 require 'pundit/rspec'
+require 'webdrivers'
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
@@ -28,4 +29,20 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :feature
+
+  Webdrivers::Geckodriver.required_version = Webdrivers::Geckodriver.latest_version
+
+  Capybara.app = Rails.application
+
+  config.before(:each, type: :feature, js: true) do
+    Capybara.register_driver :selenium_firefox do |app|
+      Capybara::Selenium::Driver.new(app, browser: :firefox)
+    end
+
+    Capybara.current_driver = :selenium_firefox
+    Capybara.javascript_driver = :selenium_firefox
+    Capybara.automatic_reload = false
+    Capybara.default_max_wait_time = 10
+  end
 end
