@@ -9,7 +9,7 @@
         <p><%= "Responsável: #{booking.user.name.capitalize}"%></p>
         <p><%= "Data: #{booking.booking_datetime.strftime("%d/%m/%Y")}" %></p>
         <p><%= "Horário: #{booking.booking_datetime.strftime("%H:%M")}h"%></p>
-        <p><%= "Reserva realizada em #{booking.created_at.strftime("%d/%m/%Y")} às #{booking.created_at.strftime("%H:%M")}h"%></p>
+        <p><%= "Reserva realizada em #{booking.created_at.strftime("%d/%m/%Y")} às #{booking.created_at.in_time_zone('Brasilia').strftime("%H:%M")}h"%></p>
       </div>
     </div>
   </div>
