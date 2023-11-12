@@ -60,6 +60,8 @@ rails db:seed
 rails s
 ```
 
+O acesso dos usuários já criados estão no arquivo `db/seeds.rb`
+
 ## Rodando Testes
 Rode os testes com o comando `bundle exec rspec` ou `bundle exec rspec spec/<path_to_spec>`<br>
-Para rodar o teste de integração é necessário que o navegador Firefox esteja instalado em sua máquina. 
+Para rodar o teste de integração é necessário que o navegador Firefox esteja instalado em sua máquina.
