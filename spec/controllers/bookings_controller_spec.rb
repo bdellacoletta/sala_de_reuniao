@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe BookingsController, type: :controller do
   let(:user) { create(:user) }
-  let(:booking) { create(:booking, user: user) }
+  let!(:booking) { create(:booking, user: user) }
 
   before { sign_in user }
 
@@ -15,12 +15,16 @@ RSpec.describe BookingsController, type: :controller do
 
   describe '#create booking' do
     it 'creates a new booking' do
-      post :create, params: { booking: { booking_datetime: Time.now } }
+      expect {
+        post :create, params: { booking: { booking_datetime: Time.now } }
+      }.to change(Booking, :count).by(1)
       expect(response).to have_http_status(200)
     end
 
     it 'fails to create a booking with invalid data' do
-      post :create, params: { booking: { booking_datetime: nil } }
+      expect{
+        post :create, params: { booking: { booking_datetime: nil } }
+      }.to change(Booking, :count).by(0)
       expect(response).to have_http_status(422)
     end
   end
@@ -48,7 +52,9 @@ RSpec.describe BookingsController, type: :controller do
 
   describe '#destroy booking' do
     it 'destroys a booking' do
-      delete :destroy, params: { id: booking.id }
+      expect{
+        delete :destroy, params: { id: booking.id }
+      }.to change(Booking, :count).by(-1)
       expect(response).to have_http_status(200)
     end
   end
