@@ -51,7 +51,7 @@ RSpec.feature 'Booking Integration', type: :feature do
     find("button[data-bs-target='#editBookingModal#{booking.id}']").click
     within('.modal') do
       sleep 2
-      fill_in 'booking[booking_datetime]', with: '01-12-2023'
+      fill_in 'booking[booking_datetime]', with: DateTime.now + 1
       sleep 2
       find('input[type="submit"]').click
     end

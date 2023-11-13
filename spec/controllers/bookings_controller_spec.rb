@@ -16,14 +16,14 @@ RSpec.describe BookingsController, type: :controller do
   describe '#create booking' do
     it 'creates a new booking' do
       expect {
-        post :create, params: { booking: { booking_datetime: Time.now } }
+        post :create, params: { booking: { booking_datetime: DateTime.now } }
       }.to change(Booking, :count).by(1)
       expect(response).to have_http_status(200)
     end
 
     it 'fails to create a booking with invalid data' do
       expect{
-        post :create, params: { booking: { booking_datetime: nil } }
+        post :create, params: { booking: { booking_datetime: DateTime.now - 1 } }
       }.to change(Booking, :count).by(0)
       expect(response).to have_http_status(422)
     end
@@ -38,14 +38,14 @@ RSpec.describe BookingsController, type: :controller do
 
   describe '#update booking' do
     it 'updates a booking' do
-      put :update, params: { id: booking.id, booking: { booking_datetime: Time.now } }
+      put :update, params: { id: booking.id, booking: { booking_datetime: DateTime.now } }
       expect(flash[:alert]).to eq('Reserva alterada.')
       expect(response).to redirect_to(request.referrer || root_path)
     end
 
     it 'fails to update a booking with invalid data' do
-      put :update, params: { id: booking.id, booking: { booking_datetime: nil } }
-      expect(flash[:notice]).to eq('Não foi possível realizar a alteração da reserva, verifique se data e horário não estão no passado.')
+      put :update, params: { id: booking.id, booking: { booking_datetime: DateTime.now - 1 } }
+      expect(flash[:notice]).to eq('Não foi possível realizar a alteração da reserva. Verifique se data e horário estão no passado ou se já há uma reserva na data e horário desejado.')
       expect(response).to redirect_to(request.referrer || root_path)
     end
   end

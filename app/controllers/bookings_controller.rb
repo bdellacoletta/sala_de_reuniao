@@ -22,7 +22,7 @@ class BookingsController < ApplicationController
     if @booking.update(booking_params)
       flash[:alert] = 'Reserva alterada.'
     else
-      flash[:notice] = 'Não foi possível realizar a alteração da reserva, verifique se data e horário não estão no passado.'
+      flash[:notice] = 'Não foi possível realizar a alteração da reserva. Verifique se data e horário estão no passado ou se já há uma reserva na data e horário desejado.'
     end
     redirect_to(request.referrer || root_path)
   end
